@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1664042867068" clover="3.2.0">
-  <project timestamp="1664042867069" name="All files">
+<coverage generated="1664050415276" clover="3.2.0">
+  <project timestamp="1664050415277" name="All files">
     <metrics statements="32" coveredstatements="32" conditionals="6" coveredconditionals="6" methods="9" coveredmethods="9" elements="47" coveredelements="47" complexity="0" loc="32" ncloc="32" packages="1" files="1" classes="1"/>
     <file name="recommendationsService.ts" path="/home/user/Driven/T6/projeto21-singmeasong/back-end/src/services/recommendationsService.ts">
       <metrics statements="32" coveredstatements="32" conditionals="6" coveredconditionals="6" methods="9" coveredmethods="9"/>

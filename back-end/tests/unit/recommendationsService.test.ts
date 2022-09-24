@@ -1,27 +1,19 @@
 import { jest } from '@jest/globals';
-import { Recommendation } from '@prisma/client';
 
 import * as factory from '../factories/recommendationFactory.js';
 import { recommendationService } from '../../src/services/recommendationsService.js';
 import { recommendationRepository } from '../../src/repositories/recommendationRepository.js';
 
 describe('RecommendationService Unit Tests', () => {
-  
-  const qtyRecommendations = 20;
-  let recommendation    : Recommendation;
-  let recommendations   : Recommendation[];
-  let recommendationsQty: Recommendation[];
 
   beforeEach(() => {
     jest.resetAllMocks();
     jest.clearAllMocks();
-
-    recommendation      = { ...factory.mockRecommendation };
-    recommendations     = [ ...factory.mockManyRecommendationWithScore() ];
-    recommendationsQty  = [ ...factory.mockManyRecommendation(qtyRecommendations) ];
-  })
+  });
   
   it('Should create a recommendation', async () => {
+
+    const recommendation = factory.getMockRecommendation();
 
     jest
       .spyOn(recommendationRepository, 'findByName')
@@ -36,7 +28,8 @@ describe('RecommendationService Unit Tests', () => {
   });
   
   it('Should not create recommendation with same name and throw', async() => {
-    
+
+    const recommendation = factory.getMockRecommendation();
     const { name, youtubeLink } = recommendation;
     
     jest
@@ -60,6 +53,8 @@ describe('RecommendationService Unit Tests', () => {
   
   it('Should upvote a recommendation', async() => {
     
+    const recommendation = factory.getMockRecommendation();
+
     jest
       .spyOn(recommendationRepository, 'find')
       .mockResolvedValueOnce({
@@ -84,8 +79,9 @@ describe('RecommendationService Unit Tests', () => {
   });
  
   it('Should not upvote recommendation when recommendation not found and throw', async() => {
-    const recommendation = factory.mockRecommendation;
-
+    
+    const recommendation = factory.getMockRecommendation();
+  
     jest
       .spyOn(recommendationRepository, 'find')
       .mockResolvedValueOnce(null);
@@ -104,6 +100,8 @@ describe('RecommendationService Unit Tests', () => {
   });
 
   it('Should downvote a recommendation and not delete it', async() => {
+    
+    const recommendation = factory.getMockRecommendation();
     
     jest
       .spyOn(recommendationRepository, 'find')
@@ -130,6 +128,7 @@ describe('RecommendationService Unit Tests', () => {
 
   it('Should downvote recommendation and delete it', async() => {
     
+    const recommendation = factory.getMockRecommendation();
     recommendation.score = -5;
 
     jest
@@ -164,6 +163,8 @@ describe('RecommendationService Unit Tests', () => {
 
   it('Should not downvote recommendation when recommendation not found and throw', async() => {
     
+    const recommendation = factory.getMockRecommendation();
+
     jest
       .spyOn(recommendationRepository, 'find')
       .mockResolvedValueOnce(null);
@@ -183,19 +184,8 @@ describe('RecommendationService Unit Tests', () => {
 
   it('Should return all recommendations', async() => {
 
-    const recommendation1 = {
-      id: Math.floor(Math.random() * 100) + 1,
-      score: 0,
-      name: Math.floor(Math.random()).toString(),
-      youtubeLink: 'https://www.youtube.com/watch?v=V64QUd69cFI',
-    };
-
-    const recommendation2 = {
-      id: Math.floor(Math.random() * 100) + 1,
-      score: 0,
-      name: Math.floor(Math.random()).toString(),
-      youtubeLink: 'https://www.youtube.com/watch?v=V64QUd69cFI',
-    }
+    const recommendation1 = factory.getMockRecommendation();
+    const recommendation2 = factory.getMockRecommendation();
 
     jest
       .spyOn(recommendationRepository, 'findAll')
@@ -213,6 +203,8 @@ describe('RecommendationService Unit Tests', () => {
   it('Should return x top recommendations', async() => {
     
     const qtyToReturn = 5;
+    const qtyRecommendations = 20;
+    const recommendationsQty = factory.getQtyMockRecommendation(qtyRecommendations);
     
     jest
       .spyOn(recommendationRepository, 'getAmountByScore')
@@ -228,7 +220,8 @@ describe('RecommendationService Unit Tests', () => {
   });
 
   it(`Should return a random recommendation with score greater than 10`, async () => {
-    const random = Math.random() * 0.7;    
+    const random = Math.random() * 0.7;  
+    const recommendations = factory.getManyMockRecommendation();  
     const expectedResult = 
       recommendations.filter(
         recommendation => recommendation.score > 10).slice(0, 10);   
@@ -242,7 +235,6 @@ describe('RecommendationService Unit Tests', () => {
       .mockResolvedValueOnce(
         expectedResult
     );
-
     jest
       .spyOn(Math, 'floor')
       .mockImplementationOnce(() => index);
@@ -250,10 +242,13 @@ describe('RecommendationService Unit Tests', () => {
     const result = await recommendationService.getRandom();
  
     expect(result).toBe(expectedResult[index]);
+
   });
 
   it(`Should return a random recommendation with score lower or equal than 10`, async () => {
+
     const random = (Math.random() * 0.3) + 0.7;
+    const recommendations = factory.getManyMockRecommendation();
     const expectedResult = 
       recommendations.filter(
         recommendation => recommendation.score <= 10).slice(0, 10);   
@@ -277,7 +272,7 @@ describe('RecommendationService Unit Tests', () => {
   });
 
   it(`Should not return a random recommendation when recommendation not found`, async () => {
-
+    
     jest
       .spyOn(recommendationRepository, 'findAll')
       .mockImplementationOnce(({ score, scoreFilter }) : any => []);
@@ -295,7 +290,9 @@ describe('RecommendationService Unit Tests', () => {
   });
   
   it(`Should return a random recommendation when score filter not match`, async () => {
+
     const random = Math.random() * 0.7;
+    const recommendations = factory.getManyMockRecommendation();
     const expectedResult = 
       recommendations.filter(
         recommendation => recommendation.score <= 10).slice(0, 10);   
