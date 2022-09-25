@@ -69,6 +69,10 @@ async function remove(id: number) {
   });
 }
 
+async function reset() {
+  return prisma.$executeRaw`TRUNCATE TABLE recommendations;`;
+}
+
 export const recommendationRepository = {
   create,
   findAll,
@@ -77,4 +81,5 @@ export const recommendationRepository = {
   updateScore,
   getAmountByScore,
   remove,
+  reset
 };

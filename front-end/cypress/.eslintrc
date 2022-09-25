@@ -1,0 +1,7 @@
+{
+  "plugins": ["cypress"],
+  "extends": ["plugins:cypress/recommended"],
+  "rules": {
+    "jest/expect-expect": "off"
+  }
+}
