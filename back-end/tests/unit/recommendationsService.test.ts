@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-import * as factory from '../factories/recommendationFactory.js';
+import * as factory from '../factories/recommendationMockFactory.js';
 import { recommendationService } from '../../src/services/recommendationsService.js';
 import { recommendationRepository } from '../../src/repositories/recommendationRepository.js';
 
@@ -20,7 +20,7 @@ describe('RecommendationService Unit Tests', () => {
       .mockResolvedValueOnce(null);
     jest
       .spyOn(recommendationRepository, 'create')
-      .mockResolvedValueOnce();
+      .mockImplementationOnce((newRecommendation):any => {});
     
     await recommendationService.insert(recommendation);
 
@@ -245,7 +245,7 @@ describe('RecommendationService Unit Tests', () => {
 
   });
 
-  it(`Should return a random recommendation with score lower or equal than 10`, async () => {
+  it(`Should return a random recommendation with score less than or equal to 10`, async () => {
 
     const random = (Math.random() * 0.3) + 0.7;
     const recommendations = factory.getManyMockRecommendation();
