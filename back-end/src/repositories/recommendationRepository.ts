@@ -81,5 +81,5 @@ export const recommendationRepository = {
   updateScore,
   getAmountByScore,
   remove,
-  reset
+  reset,
 };

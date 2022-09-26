@@ -318,4 +318,14 @@ describe('RecommendationService Unit Tests', () => {
     expect(result).toBe(expectedResult[index]);
   });
 
+  it(`Should reset all data`, async () => {
+    jest
+      .spyOn(recommendationRepository, 'reset')
+      .mockResolvedValueOnce(null);
+   
+    await recommendationService.reset();
+ 
+    expect(recommendationRepository.reset).toBeCalled();
+  });
+
 })

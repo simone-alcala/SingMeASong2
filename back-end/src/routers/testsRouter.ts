@@ -3,6 +3,6 @@ import { recommendationController } from "../controllers/recommendationControlle
 
 const testsRouter = Router();
 
-testsRouter.post("/reset-database", recommendationController.reset);
+testsRouter.delete("/reset-database", recommendationController.reset);
 
 export default testsRouter;

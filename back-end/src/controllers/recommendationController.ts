@@ -68,5 +68,5 @@ export const recommendationController = {
   getTop,
   get,
   getById,
-  reset
+  reset,
 };

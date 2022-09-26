@@ -4,7 +4,7 @@ const visitURL = 'http://localhost:3000';
 const baseURL = 'http://localhost:5000/recommendations';
 
 beforeEach(async () => {
-  await cy.request('POST', `${baseURL}/reset-database`);
+  await cy.request('DELETE', `${baseURL}/reset-database`);
 });
 
 describe('Recommendation Tests Suite', () => {
